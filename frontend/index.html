@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AWS Bedrock Chatbot</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="chat-container">
+    <header>
+      <h1>AWS Bedrock Chatbot</h1>
+      <p class="subtitle">Powered by Claude (Amazon Bedrock)</p>
+    </header>
+    <div id="messages" class="messages"></div>
+    <form id="chat-form">
+      <input
+        id="chat-input"
+        type="text"
+        placeholder="メッセージを入力..."
+        autocomplete="off"
+        required
+      />
+      <button type="submit">送信</button>
+    </form>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

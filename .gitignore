@@ -1,0 +1,8 @@
+# CDK
+infra/cdk.out/
+infra/cdk.context.json
+
+# Python
+infra/.venv/
+__pycache__/
+*.pyc
