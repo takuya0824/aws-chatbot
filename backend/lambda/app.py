@@ -39,12 +39,12 @@ def _response(status: int, body: dict) -> dict:
 def _load_history(session_id: str) -> list[dict]:
     result = table.query(
         KeyConditionExpression=Key("session_id").eq(session_id),
-        ScanIndexForward=True,
+        ScanIndexForward=False,
         Limit=HISTORY_TURNS * 2,
     )
     return [
         {"role": item["role"], "content": [{"text": item["text"]}]}
-        for item in result.get("Items", [])
+        for item in reversed(result.get("Items", []))
     ]
 
 
