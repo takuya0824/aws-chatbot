@@ -6,3 +6,7 @@ infra/cdk.context.json
 infra/.venv/
 __pycache__/
 *.pyc
+
+# Claude Code
+CLAUDE.md
+notes/
