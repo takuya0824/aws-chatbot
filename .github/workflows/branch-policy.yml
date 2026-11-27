@@ -1,0 +1,33 @@
+name: Branch Policy
+
+# PR の向きとブランチ名が git-branch-flow のルールに合うかを検査する。
+# ルールセットの「必須ステータスチェック」に「branch-policy」を登録すると、合わない PR はマージできなくなる。
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+    branches: [main, develop]
+
+permissions: {}
+
+jobs:
+  branch-policy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: PR の向きとブランチ名を検査
+        env:
+          # ブランチ名は外から入る値なので、run に直接埋め込まず環境変数で渡す
+          HEAD_REF: ${{ github.head_ref }}
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          echo "PR: ${HEAD_REF} -> ${BASE_REF}"
+          case "${BASE_REF}:${HEAD_REF}" in
+            develop:feature/*|develop:fix/*|develop:hotfix/*|main:develop|main:hotfix/*) ;;
+            *)
+              echo "::error::この向きの PR は許可されていません。許可: feature/*・fix/* → develop、develop → main、hotfix/* → main、hotfix/* → develop"
+              exit 1 ;;
+          esac
+          if [ "${HEAD_REF}" != "develop" ] && ! [[ "${HEAD_REF}" =~ ^(feature|fix|hotfix)/([0-9]+-)?[a-z0-9]+(-[a-z0-9]+)*$ ]]; then
+            echo "::error::ブランチ名がルールに合いません: ${HEAD_REF}（例: feature/12-add-memo-search）"
+            exit 1
+          fi
+          echo "OK"
